@@ -1,0 +1,808 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: #f4f6f9;
+  color: #1e293b;
+  direction: rtl;
+}
+
+/* Layout */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #0f172a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #334155;
+  margin-bottom: 1.5rem;
+}
+
+.brand-logo-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #fff;
+  padding: 2px;
+}
+
+.brand div {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand strong {
+  font-size: 1.1rem;
+}
+
+.brand span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: right;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.nav-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.nav-item:hover, .nav-item.active {
+  background-color: #1e293b;
+  color: #38bdf8;
+}
+
+.sidebar-bottom {
+  border-top: 1px solid #334155;
+  padding-top: 1rem;
+}
+
+.user-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.user-mini div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.user-mini strong {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-mini span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background-color: #0284c7;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.logout {
+  width: 100%;
+  padding: 0.5rem;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.topbar h1 {
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.topbar p {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Dashboard Elements */
+.welcome {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.welcome-icon .icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat {
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.stat-icon {
+  background: #e0f2fe;
+  padding: 0.65rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon .icon {
+  width: 24px;
+  height: 24px;
+  color: #0284c7;
+}
+
+.stat strong {
+  font-size: 1.5rem;
+  display: block;
+  color: #0f172a;
+}
+
+.stat span {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.quick {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick:hover {
+  border-color: #0284c7;
+  transform: translateY(-2px);
+}
+
+.quick-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #e0f2fe;
+  flex-shrink: 0;
+}
+
+.quick-icon .icon {
+  width: 18px;
+  height: 18px;
+  color: #0284c7;
+}
+
+/* Tables & Controls */
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.toolbar input, .toolbar select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+}
+
+.toolbar input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+}
+
+th, td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.table-card table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table-card table tbody tr:nth-child(even) {
+  background-color: #fafbfd;
+}
+
+.table-card table tbody tr:hover {
+  background-color: #f0f9ff;
+}
+
+.table-card table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.club-logo-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Status Badges */
+.status {
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-approved { background: #dcfce7; color: #15803d; }
+.status-pending { background: #fef9c3; color: #a16207; }
+.status-rejected { background: #fee2e2; color: #b91c1c; }
+
+/* Buttons */
+button.primary {
+  background: #0284c7;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button.secondary {
+  background: #64748b;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button.small {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+  margin-left: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+button.small:hover {
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+button.small.danger:hover,
+button.small.success:hover {
+  filter: brightness(1.08);
+  color: #fff;
+}
+
+button.danger { background: #ef4444; color: #fff; border: none; }
+button.success { background: #22c55e; color: #fff; border: none; }
+
+/* Login Page */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f1f5f9;
+}
+
+.login-card {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.login-card label {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.3rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+/* Modals */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.form-grid.two {
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.form-grid input, .form-grid select {
+  padding: 0.6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Swimmer ID Card */
+.print-area {
+  display: flex;
+  justify-content: center;
+}
+
+.swimmer-card {
+  width: 100%;
+  max-width: 460px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #fff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.card-federation-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #fff;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.card-header-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.card-header-text h3 {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.card-header-text span {
+  font-size: 0.75rem;
+  color: #e0f2fe;
+}
+
+.card-club-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #fff;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.card-body {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  align-items: flex-start;
+}
+
+.card-photo img {
+  width: 110px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.card-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-details p {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #1e293b;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.card-details p:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.card-details strong {
+  color: #64748b;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Print: show only the swimmer card, cleanly, without affecting normal printing
+   of other pages (e.g. the registrations list print button). */
+@media print {
+  body:has(.print-area) * {
+    visibility: hidden;
+  }
+
+  body:has(.print-area) .print-area,
+  body:has(.print-area) .print-area * {
+    visibility: visible;
+  }
+
+  body:has(.print-area) .print-area {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1.5cm;
+  }
+
+  .swimmer-card {
+    max-width: 100%;
+    box-shadow: none;
+    border: 1px solid #94a3b8;
+    page-break-inside: avoid;
+  }
+}
+
+@page {
+  size: A5 portrait;
+  margin: 0.5cm;
+}
+
+/* --- Missing base styles used throughout the app --- */
+
+.alert {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.alert button {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.page-head h2 {
+  font-size: 1.25rem;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+}
+
+.page-head p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 0.2rem;
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  margin-inline-start: 8px;
+  background: #e0f2fe;
+  color: #0284c7;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  color: #0f172a;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.welcome-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.empty {
+  text-align: center;
+  color: #94a3b8;
+  padding: 2rem 1rem !important;
+  font-size: 0.9rem;
+}
+
+.toolbar.flex-gap {
+  align-items: center;
+}
+
+.toolbar.flex-gap select {
+  min-width: 160px;
+  flex: 0 0 auto;
+}
+
+.full {
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.club-logo-mini {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-left: 6px;
+  background: #f1f5f9;
+}
+
+.club-logo-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.swimmer-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f1f5f9;
+}
+
+.top-user {
+  font-size: 0.85rem;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+}
+
+.photo-upload {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.photo-upload-preview {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.photo-upload input[type="file"] {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8rem;
+}
