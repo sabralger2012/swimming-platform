@@ -2,6 +2,27 @@ import { useEffect, useMemo, useState, useRef } from 'react'
 import { supabase } from './lib/supabase'
 import * as XLSX from 'xlsx'
 import './App.css'
+import './theme.css'
+
+// شعار الاتحادية — ضع الملف في مجلد public باسم إنجليزي لتفادي مشاكل الترميز في Windows
+// يُستعمل في: الشريط الجانبي، صفحة الدخول، العلامة المائية، لوحة التحكم، وبطاقة السباح (رأس البطاقة، خلفية البطاقة، وظهر البطاقة)
+const FEDERATION_LOGO = '/federation-logo.jfif'
+// أبقينا هذين الاسمين لتفادي تعديل بقية الكود، وكلاهما يشيران لنفس الشعار
+const CARD_LEAGUE_LOGO = FEDERATION_LOGO
+const CARD_FEDERATION_LOGO = FEDERATION_LOGO
+
+// الموسم الرياضي يبدأ في سبتمبر: سبتمبر 2026 → 2026/2027
+function getSportsSeason(date = new Date()) {
+  const y = date.getFullYear()
+  return date.getMonth() >= 8 ? `${y}/${y + 1}` : `${y - 1}/${y}`
+}
+
+// 2010-05-12 → 12/05/2010
+function formatCardDate(value) {
+  if (!value) return '—'
+  const [y, m, d] = String(value).slice(0, 10).split('-')
+  return y && m && d ? `${d}/${m}/${y}` : value
+}
 
 const emptySwimmer = {
   registration_number: '',
@@ -35,6 +56,7 @@ function App() {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activePage, setActivePage] = useState('dashboard')
+  const [sidebarOpen, setSidebarOpen] = useState(false) // للقائمة الجانبية على الهاتف
   const [stats, setStats] = useState({ clubs: 0, swimmers: 0, competitions: 0, registrations: 0 })
 
   const [clubs, setClubs] = useState([])
@@ -637,14 +659,15 @@ function App() {
 
   return (
     <div className="app-shell" dir="rtl">
-      <aside className="sidebar">
+      {sidebarOpen && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
+      <aside className={sidebarOpen ? 'sidebar sidebar-open' : 'sidebar'}>
         <div className="brand">
-          <img src="/الاتحادية.jfif" alt="شعار الاتحادية" className="brand-logo-img" />
+          <img src={FEDERATION_LOGO} alt="شعار الاتحادية" className="brand-logo-img" />
           <div><strong>الاتحادية</strong><span>نظام إدارة السباحة</span></div>
         </div>
         <nav>
           {nav.map(([key, label, icon]) => (
-            <button key={key} className={activePage === key ? 'nav-item active' : 'nav-item'} onClick={() => { setActivePage(key); setError('') }}>
+            <button key={key} className={activePage === key ? 'nav-item active' : 'nav-item'} onClick={() => { setActivePage(key); setError(''); setSidebarOpen(false) }}>
               <Icon name={icon} className="nav-icon" />{label}
             </button>
           ))}
@@ -659,7 +682,9 @@ function App() {
       </aside>
 
       <main className="main">
+        <img src={FEDERATION_LOGO} alt="" aria-hidden="true" className="main-watermark" />
         <header className="topbar">
+          <button className="menu-toggle" onClick={() => setSidebarOpen(true)} aria-label="فتح القائمة">☰</button>
           <div><h1>{nav.find(x => x[0] === activePage)?.[1]}</h1><p>إدارة نظام السباحة</p></div>
           <div className="top-user">{profile?.email}</div>
         </header>
@@ -772,7 +797,7 @@ function App() {
         )}
 
         {activePage === 'documents' && isFederationAdmin && (
-          <DocumentsPage />
+          <DocumentsPage canManage={isFederationAdmin} />
         )}
 
         {competitionModal && (
@@ -796,12 +821,13 @@ function App() {
       {cardSwimmer && (
         <Modal title="بطاقة السباح الرسمية" onClose={() => setCardSwimmer(null)}>
           <div className="print-area">
-            <div className="swimmer-card">
+            {/* وجه البطاقة */}
+            <div className="swimmer-card card-front" style={{ '--card-bg': `url("${CARD_FEDERATION_LOGO}")` }}>
               <div className="card-header">
-                <img src="/الاتحادية.jfif" alt="الاتحادية" className="card-federation-logo" />
+                <img src={CARD_LEAGUE_LOGO} alt="شعار الرابطة" className="card-federation-logo" />
                 <div className="card-header-text">
-                  <h3>الاتحادية الجزائرية للسباحة</h3>
-                  <span>بطاقة رياضي معتمد</span>
+                  <h3>الاتحاد الجزائري للألعاب المائية</h3>
+                  <span>الرابطة الولائية للألعاب المائية والسباحة - المسيلة</span>
                 </div>
                 {cardSwimmer.clubs?.logo_url && (
                   <img src={cardSwimmer.clubs.logo_url} alt="النادي" className="card-club-logo" />
@@ -814,10 +840,33 @@ function App() {
                 <div className="card-details">
                   <p><strong>الاسم:</strong> {cardSwimmer.first_name}</p>
                   <p><strong>اللقب:</strong> {cardSwimmer.last_name}</p>
-                  <p><strong>رقم التسجيل:</strong> {cardSwimmer.registration_number || 'غير مسجل'}</p>
-                  <p><strong>الفئة:</strong> {cardSwimmer.category}</p>
+                  <p><strong>تاريخ ومكان الميلاد:</strong> {formatCardDate(cardSwimmer.birth_date)}{cardSwimmer.birth_place ? ` بـ ${cardSwimmer.birth_place}` : ''}</p>
+                  <p><strong>الصنف:</strong> {cardSwimmer.category}</p>
                   <p><strong>النادي:</strong> {cardSwimmer.clubs?.name || 'بدون نادي'}</p>
-                  <p><strong>تاريخ الميلاد:</strong> {cardSwimmer.birth_date || '—'}</p>
+                  <p><strong>الموسم الرياضي:</strong> {getSportsSeason()}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* ظهر البطاقة */}
+            <div className="swimmer-card card-back">
+              <img
+                src={CARD_FEDERATION_LOGO}
+                alt="شعار الاتحاد الجزائري للألعاب المائية"
+                className="card-back-logo"
+                onError={e => { e.currentTarget.style.display = 'none' }}
+              />
+              <h3>الاتحاد الجزائري للألعاب المائية</h3>
+              <span className="card-back-league">الرابطة الولائية للألعاب المائية والسباحة - المسيلة</span>
+              <p className="card-back-note">
+                هذه البطاقة شخصية ولا يجوز استعمالها من طرف غير صاحبها.
+                في حال العثور عليها يُرجى إعادتها إلى الرابطة الولائية.
+              </p>
+              <div className="card-back-footer">
+                <div className="card-back-sign">ختم وإمضاء الرابطة</div>
+                <div className="card-back-number">
+                  <span>رقم التسجيل</span>
+                  <strong>{cardSwimmer.registration_number || '—'}</strong>
                 </div>
               </div>
             </div>
@@ -832,29 +881,236 @@ function App() {
   )
 }
 
-function DocumentsPage() {
+const DOCS_BUCKET = 'federation-documents'
+const DOCS_MAX_SIZE = 20 * 1024 * 1024 // 20 MB
+
+function getDocType(fileName = '') {
+  const ext = (fileName.split('.').pop() || '').toLowerCase()
+  if (ext === 'pdf') return 'PDF'
+  if (['xls', 'xlsx', 'csv'].includes(ext)) return 'Excel'
+  if (['doc', 'docx'].includes(ext)) return 'Word'
+  if (['ppt', 'pptx'].includes(ext)) return 'PowerPoint'
+  if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) return 'صورة'
+  return ext ? ext.toUpperCase() : 'ملف'
+}
+
+function formatFileSize(bytes) {
+  if (!bytes && bytes !== 0) return '—'
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function DocumentsPage({ canManage }) {
+  const [documents, setDocuments] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const [error, setError] = useState('')
+  const [modalOpen, setModalOpen] = useState(false)
+  const [title, setTitle] = useState('')
+  const [file, setFile] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [busyId, setBusyId] = useState(null)
+
+  useEffect(() => {
+    loadDocuments()
+  }, [])
+
+  async function loadDocuments() {
+    setLoading(true)
+    const { data, error: e } = await supabase
+      .from('federation_documents')
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (e) setError(e.message)
+    else setDocuments(data || [])
+    setLoading(false)
+  }
+
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim()
+    return documents.filter(d =>
+      (d.title || '').toLowerCase().includes(q) || (d.file_name || '').toLowerCase().includes(q)
+    )
+  }, [documents, search])
+
+  function openAdd() {
+    setTitle('')
+    setFile(null)
+    setError('')
+    setModalOpen(true)
+  }
+
+  function handleFileChange(e) {
+    const selected = e.target.files[0] || null
+    if (selected && selected.size > DOCS_MAX_SIZE) {
+      setError('حجم الملف يتجاوز 20 ميغابايت.')
+      e.target.value = ''
+      setFile(null)
+      return
+    }
+    setError('')
+    setFile(selected)
+    if (selected && !title.trim()) setTitle(selected.name.replace(/\.[^.]+$/, ''))
+  }
+
+  async function saveDocument(e) {
+    e.preventDefault()
+    if (!canManage || saving) return
+    setError('')
+    if (!title.trim()) return setError('عنوان الوثيقة مطلوب.')
+    if (!file) return setError('يرجى اختيار ملف.')
+
+    setSaving(true)
+
+    // اسم آمن في التخزين (الأسماء العربية تُرفض كمفاتيح)، والاسم الأصلي يُحفظ في الجدول
+    const ext = ((file.name.split('.').pop() || 'bin').toLowerCase()).replace(/[^a-z0-9]/g, '') || 'bin'
+    const filePath = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${ext}`
+
+    const { error: uploadError } = await supabase.storage
+      .from(DOCS_BUCKET)
+      .upload(filePath, file, { contentType: file.type || undefined })
+
+    if (uploadError) {
+      setSaving(false)
+      return setError(`فشل رفع الملف: ${uploadError.message}`)
+    }
+
+    const { error: insertError } = await supabase.from('federation_documents').insert({
+      title: title.trim(),
+      file_path: filePath,
+      file_name: file.name,
+      file_size: file.size,
+    })
+
+    if (insertError) {
+      // تنظيف الملف المرفوع حتى لا يبقى يتيماً في التخزين
+      await supabase.storage.from(DOCS_BUCKET).remove([filePath])
+      setSaving(false)
+      return setError(insertError.message)
+    }
+
+    setSaving(false)
+    setModalOpen(false)
+    await loadDocuments()
+  }
+
+  async function downloadDocument(doc) {
+    setBusyId(doc.id)
+    setError('')
+    const { data, error: e } = await supabase.storage
+      .from(DOCS_BUCKET)
+      .createSignedUrl(doc.file_path, 60, { download: doc.file_name })
+    setBusyId(null)
+
+    if (e) return setError(`تعذر تحميل الملف: ${e.message}`)
+
+    const a = document.createElement('a')
+    a.href = data.signedUrl
+    a.rel = 'noopener'
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+  }
+
+  async function deleteDocument(doc) {
+    if (!confirm(`هل أنت متأكد من حذف "${doc.title}"؟`)) return
+    setBusyId(doc.id)
+    setError('')
+
+    const { data: deleted, error: e } = await supabase
+      .from('federation_documents')
+      .delete()
+      .eq('id', doc.id)
+      .select('id')
+
+    if (e) {
+      setBusyId(null)
+      return setError(e.message)
+    }
+    if (!deleted?.length) {
+      setBusyId(null)
+      return setError('لا تملك صلاحية حذف هذه الوثيقة.')
+    }
+
+    const { error: storageError } = await supabase.storage.from(DOCS_BUCKET).remove([doc.file_path])
+    if (storageError) setError(`حُذفت الوثيقة لكن تعذر حذف الملف من التخزين: ${storageError.message}`)
+
+    setBusyId(null)
+    await loadDocuments()
+  }
+
+  const formatDate = (value) => {
+    if (!value) return '—'
+    return new Date(value).toLocaleDateString('ar-DZ', { year: 'numeric', month: 'long', day: 'numeric' })
+  }
+
   return (
     <section>
-      <PageHead title="مركز الوثائق والنشرات" button="رفع وثيقة جديدة" onAdd={() => alert('يمكنك رفع ونشر القوانين والجداول الرسمية هنا.')} />
+      <PageHead
+        title="مركز الوثائق والنشرات"
+        button={canManage ? 'رفع وثيقة جديدة' : null}
+        onAdd={canManage ? openAdd : undefined}
+        count={documents.length}
+      />
+
+      {error && !modalOpen && <div className="alert">{error}</div>}
+
+      <div className="toolbar">
+        <input
+          placeholder="ابحث بعنوان الوثيقة أو اسم الملف..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
+
       <div className="table-card">
         <table>
-          <thead><tr><th>عنوان الوثيقة</th><th>النوع</th><th>تاريخ الرفع</th><th>الإجراءات</th></tr></thead>
+          <thead>
+            <tr><th>عنوان الوثيقة</th><th>النوع</th><th>الحجم</th><th>تاريخ الرفع</th><th>الإجراءات</th></tr>
+          </thead>
           <tbody>
-            <tr>
-              <td><strong>القانون الأساسي للمنافسات 2026</strong></td>
-              <td><span className="status">PDF</span></td>
-              <td>10 سبتمبر 2026</td>
-              <td><button className="small">تحميل</button></td>
-            </tr>
-            <tr>
-              <td><strong>جدول التوقيتات التأهيلية</strong></td>
-              <td><span className="status">Excel</span></td>
-              <td>01 سبتمبر 2026</td>
-              <td><button className="small">تحميل</button></td>
-            </tr>
+            {filtered.map(d => (
+              <tr key={d.id}>
+                <td><strong>{d.title}</strong></td>
+                <td><span className="status">{getDocType(d.file_name)}</span></td>
+                <td>{formatFileSize(d.file_size)}</td>
+                <td>{formatDate(d.created_at)}</td>
+                <td>
+                  <button className="small" disabled={busyId === d.id} onClick={() => downloadDocument(d)}>تحميل</button>
+                  {canManage && (
+                    <button className="small danger" disabled={busyId === d.id} onClick={() => deleteDocument(d)}>حذف</button>
+                  )}
+                </td>
+              </tr>
+            ))}
+            {loading && <tr><td colSpan="5" className="empty">جارٍ التحميل...</td></tr>}
+            {!loading && !filtered.length && <tr><td colSpan="5" className="empty">لا توجد وثائق.</td></tr>}
           </tbody>
         </table>
       </div>
+
+      {modalOpen && (
+        <Modal title="رفع وثيقة جديدة" onClose={() => !saving && setModalOpen(false)}>
+          {error && <div className="alert">{error}</div>}
+          <form onSubmit={saveDocument} className="form-grid">
+            <label className="wide">عنوان الوثيقة *
+              <input required value={title} onChange={e => setTitle(e.target.value)} />
+            </label>
+            <label className="wide">الملف * (PDF / Word / Excel / صورة — حتى 20 ميغابايت)
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,image/*"
+                onChange={handleFileChange}
+              />
+            </label>
+            <div className="form-actions wide">
+              <button type="button" disabled={saving} onClick={() => setModalOpen(false)}>إلغاء</button>
+              <button className="primary" disabled={saving}>{saving ? 'جارٍ الرفع...' : 'رفع الوثيقة'}</button>
+            </div>
+          </form>
+        </Modal>
+      )}
     </section>
   )
 }
@@ -1005,7 +1261,7 @@ function Login({ onLogin, error }) {
   const [password, setPassword] = useState('')
   return <div className="login-page" dir="rtl">
     <form className="login-card" onSubmit={e => { e.preventDefault(); onLogin(email, password) }}>
-      <img src="/الاتحادية.jfif" alt="الاتحادية" className="login-logo" />
+      <img src={FEDERATION_LOGO} alt="الاتحادية" className="login-logo" />
       <h1>نظام إدارة السباحة</h1><p>تسجيل الدخول إلى لوحة الإدارة</p>
       {error && <div className="alert">{error}</div>}
       <label>البريد الإلكتروني<input type="email" required value={email} onChange={e => setEmail(e.target.value)} /></label>
@@ -1017,7 +1273,7 @@ function Login({ onLogin, error }) {
 
 function Dashboard({ stats, onNavigate, isFederationAdmin, clubName }) {
   return <section>
-    <div className="welcome"><div><h2>مرحبًا بك 👋</h2><p>{isFederationAdmin ? 'من هنا يمكنك إدارة كامل نظام السباحة.' : `إدارة نادي ${clubName || 'ناديك'} والسباحين والتسجيلات.`}</p></div><div className="welcome-icon"><Icon name="swimmer" /></div></div>
+    <div className="welcome"><div><h2>مرحبًا بك 👋</h2><p>{isFederationAdmin ? 'من هنا يمكنك إدارة كامل نظام السباحة.' : `إدارة نادي ${clubName || 'ناديك'} والسباحين والتسجيلات.`}</p></div><div className="welcome-icon welcome-icon--logo"><img src={FEDERATION_LOGO} alt="شعار الاتحادية" /></div></div>
     <div className="stats-grid">
       <Stat label="الأندية" value={stats.clubs} icon="building" />
       <Stat label="السباحون" value={stats.swimmers} icon="swimmer" />

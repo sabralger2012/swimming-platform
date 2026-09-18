@@ -1,808 +1,499 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+/* =====================================================================
+   App.css — التخطيط الأساسي (الأحجام، المسافات، Flex/Grid)
+   هذا الملف مسؤول عن الهيكل والأحجام فقط.
+   الألوان والظلال والحواف موجودة في theme.css الذي يُحمَّل بعده.
+   ===================================================================== */
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; padding: 0; }
+body { margin: 0; }
+
+button {
+  cursor: pointer;
+  border: 1px solid #d0d7de;
+  background: #fff;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
 }
 
-body {
-  background-color: #f4f6f9;
-  color: #1e293b;
-  direction: rtl;
+input, select, textarea {
+  padding: 0.55rem 0.8rem;
+  font-size: 0.9rem;
+  width: 100%;
 }
 
-/* Layout */
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+h1, h2, h3, p { margin: 0; }
+
+.icon { width: 20px; height: 20px; flex-shrink: 0; }
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.alert button {
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0.4rem;
+  color: inherit;
+}
+
+/* ---------- هيكل الصفحة العام ---------- */
 .app-shell {
   display: flex;
   min-height: 100vh;
+  width: 100%;
 }
 
+/* ---------- الشريط الجانبي ---------- */
 .sidebar {
   width: 260px;
-  background-color: #0f172a;
-  color: #fff;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 1rem;
-  flex-shrink: 0;
+  padding: 1.25rem 1rem;
+  gap: 1.5rem;
+  min-height: 100vh;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #334155;
-  margin-bottom: 1.5rem;
+  gap: 0.7rem;
+  padding-bottom: 1rem;
 }
-
-.brand-logo-img {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  object-fit: contain;
-  background: #fff;
-  padding: 2px;
-}
-
-.brand div {
-  display: flex;
-  flex-direction: column;
-}
-
-.brand strong {
-  font-size: 1.1rem;
-}
-
-.brand span {
-  font-size: 0.75rem;
-  color: #94a3b8;
-}
+.brand-logo-img { width: 42px; height: 42px; flex-shrink: 0; }
+.brand div { display: flex; flex-direction: column; line-height: 1.4; }
+.brand strong { font-size: 1rem; }
+.brand span { font-size: 0.72rem; }
 
 .sidebar nav {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
   flex: 1;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0.75rem 1rem;
+  gap: 0.65rem;
+  padding: 0.65rem 0.9rem;
   border: none;
-  background: transparent;
-  color: #cbd5e1;
-  border-radius: 8px;
-  cursor: pointer;
   text-align: right;
-  font-size: 0.95rem;
-  transition: all 0.2s;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
-
-.icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.nav-icon {
-  width: 19px;
-  height: 19px;
-}
-
-.nav-item:hover, .nav-item.active {
-  background-color: #1e293b;
-  color: #38bdf8;
-}
+.nav-icon { width: 18px; height: 18px; }
 
 .sidebar-bottom {
-  border-top: 1px solid #334155;
-  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 .user-mini {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 1rem;
+  gap: 0.6rem;
+  padding: 0.6rem 0.7rem;
 }
-
-.user-mini div {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.user-mini strong {
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-mini span {
-  font-size: 0.75rem;
-  color: #94a3b8;
-}
+.user-mini div { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
+.user-mini strong { font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-mini span { font-size: 0.72rem; }
 
 .avatar {
   width: 36px;
   height: 36px;
-  background-color: #0284c7;
-  color: #fff;
+  min-width: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-size: 0.95rem;
 }
 
 .logout {
   width: 100%;
-  padding: 0.5rem;
-  background: #ef4444;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  padding: 0.55rem;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
-/* Main Content */
+/* ---------- المنطقة الرئيسية ---------- */
 .main {
   flex: 1;
-  padding: 2rem;
+  min-width: 0;
+  padding: 1.75rem 2rem;
   overflow-y: auto;
 }
 
+.main-watermark { display: block; }
+
 .topbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  background: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
+.topbar h1 { font-size: 1.4rem; margin-bottom: 0.2rem; }
+.topbar p { font-size: 0.85rem; }
 
-.topbar h1 {
-  font-size: 1.5rem;
-  color: #0f172a;
-}
-
-.topbar p {
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-/* Dashboard Elements */
-.welcome {
-  background: linear-gradient(135deg, #0284c7, #0369a1);
-  color: #fff;
-  padding: 1.5rem 2rem;
-  border-radius: 12px;
+/* ---------- عناوين الصفحات ---------- */
+.page-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.page-head h2 { font-size: 1.2rem; display: flex; align-items: center; }
+.page-head p { font-size: 0.8rem; margin-top: 0.25rem; }
+
+.section-title {
+  display: block;
+  margin: 1.75rem 0 1rem;
+  font-size: 1.05rem;
 }
 
-.welcome-icon .icon {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
+.toolbar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
 }
+.toolbar input, .toolbar select { max-width: 320px; }
+.toolbar.flex-gap { align-items: center; }
+
+/* ---------- لوحة التحكم ---------- */
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+.welcome h2 { font-size: 1.3rem; margin-bottom: 0.4rem; }
+.welcome p { font-size: 0.9rem; }
+
+.welcome-icon {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.welcome-icon--logo img { display: block; }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .stat {
-  background: #fff;
-  padding: 1.25rem;
-  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  gap: 0.9rem;
+  padding: 1.1rem 1.25rem;
 }
-
 .stat-icon {
-  background: #e0f2fe;
-  padding: 0.65rem;
-  border-radius: 10px;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-.stat-icon .icon {
-  width: 24px;
-  height: 24px;
-  color: #0284c7;
-}
-
-.stat strong {
-  font-size: 1.5rem;
-  display: block;
-  color: #0f172a;
-}
-
-.stat span {
-  font-size: 0.85rem;
-  color: #64748b;
-}
+.stat div { display: flex; flex-direction: column; gap: 0.15rem; }
+.stat span { font-size: 0.78rem; }
+.stat strong { font-size: 1.35rem; }
 
 .quick-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 .quick {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  padding: 1rem;
-  border-radius: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all 0.2s;
+  gap: 0.9rem;
+  padding: 1.1rem 1.25rem;
+  text-align: right;
+  width: 100%;
 }
-
-.quick:hover {
-  border-color: #0284c7;
-  transform: translateY(-2px);
-}
-
 .quick-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.quick strong { flex: 1; font-size: 0.95rem; }
+.quick b { font-weight: 400; font-size: 1.1rem; }
+
+/* ---------- الجداول ---------- */
+.table-card {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+.table-card table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.table-card th, .table-card td {
+  padding: 0.75rem 1rem;
+  text-align: right;
+  white-space: nowrap;
+}
+.table-card td strong { font-weight: 700; }
+.empty { text-align: center !important; padding: 2rem !important; white-space: normal !important; }
+
+.club-logo-thumb, .club-logo-mini, .swimmer-thumb {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  background: #e0f2fe;
-  flex-shrink: 0;
-}
-
-.quick-icon .icon {
-  width: 18px;
-  height: 18px;
-  color: #0284c7;
-}
-
-/* Tables & Controls */
-.toolbar {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.toolbar input, .toolbar select {
-  padding: 0.6rem 1rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  outline: none;
-  background: #fff;
-}
-
-.toolbar input {
-  flex: 1;
-  min-width: 200px;
-}
-
-.table-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: right;
-}
-
-th, td {
-  padding: 1rem;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-th {
-  background: #f8fafc;
-  color: #475569;
-  font-weight: 600;
-  font-size: 0.85rem;
-}
-
-.table-card table tbody tr {
-  transition: background-color 0.15s ease;
-}
-
-.table-card table tbody tr:nth-child(even) {
-  background-color: #fafbfd;
-}
-
-.table-card table tbody tr:hover {
-  background-color: #f0f9ff;
-}
-
-.table-card table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.club-logo-thumb {
-  width: 36px;
-  height: 36px;
   border-radius: 50%;
   object-fit: cover;
+  vertical-align: middle;
 }
-
-/* Status Badges */
-.status {
-  padding: 0.25rem 0.6rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.status-approved { background: #dcfce7; color: #15803d; }
-.status-pending { background: #fef9c3; color: #a16207; }
-.status-rejected { background: #fee2e2; color: #b91c1c; }
-
-/* Buttons */
-button.primary {
-  background: #0284c7;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-button.secondary {
-  background: #64748b;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button.small {
-  padding: 0.3rem 0.6rem;
-  font-size: 0.8rem;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  background: #fff;
-  cursor: pointer;
-  margin-left: 0.3rem;
-  transition: all 0.15s ease;
-}
-
-button.small:hover {
-  border-color: #0284c7;
-  color: #0284c7;
-}
-
-button.small.danger:hover,
-button.small.success:hover {
-  filter: brightness(1.08);
-  color: #fff;
-}
-
-button.danger { background: #ef4444; color: #fff; border: none; }
-button.success { background: #22c55e; color: #fff; border: none; }
-
-/* Login Page */
-.login-page {
+.club-logo-mini { width: 20px; height: 20px; margin-inline-end: 0.35rem; }
+.club-logo-placeholder {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  justify-content: center;
   background: #f1f5f9;
+  font-size: 1.1rem;
 }
 
-.login-card {
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
-}
+button.small { padding: 0.35rem 0.7rem; font-size: 0.78rem; margin-inline-end: 0.35rem; }
+button.secondary { background: #f1f5f9; }
 
-.login-logo {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin: 0 auto 1rem;
-  display: block;
-}
-
-.login-card label {
-  display: block;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #475569;
-}
-
-.login-card input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.3rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-}
-
-/* Modals */
+/* ---------- النوافذ المنبثقة (Modal) ---------- */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(15, 23, 42, 0.45);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 100;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
 }
-
 .modal {
   background: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
   width: 100%;
-  max-width: 550px;
+  max-width: 640px;
   max-height: 90vh;
   overflow-y: auto;
+  padding: 1.5rem;
 }
-
 .modal-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.modal-head button {
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0 0.4rem;
 }
 
+/* ---------- النماذج ---------- */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
 }
-
-.form-grid.two {
-  grid-template-columns: 1fr 1fr;
-}
-
-.form-grid label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.85rem;
-}
-
-.form-grid input, .form-grid select {
-  padding: 0.6rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-}
+.form-grid.two { grid-template-columns: repeat(2, 1fr); }
+.form-grid .wide { grid-column: 1 / -1; }
+.form-grid h4.wide { font-size: 0.95rem; margin-bottom: -0.3rem; }
 
 .form-actions {
-  grid-column: 1 / -1;
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
-/* Swimmer ID Card */
-.print-area {
-  display: flex;
-  justify-content: center;
-}
-
-.swimmer-card {
-  width: 100%;
-  max-width: 460px;
-  border: 1px solid #cbd5e1;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 1rem 1.25rem;
-  background: linear-gradient(135deg, #0284c7, #0369a1);
-  color: #fff;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-
-.card-federation-logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: contain;
-  background: #fff;
-  padding: 3px;
-  flex-shrink: 0;
-}
-
-.card-header-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.card-header-text h3 {
-  font-size: 1rem;
-  line-height: 1.3;
-}
-
-.card-header-text span {
-  font-size: 0.75rem;
-  color: #e0f2fe;
-}
-
-.card-club-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: contain;
-  background: #fff;
-  padding: 2px;
-  flex-shrink: 0;
-}
-
-.card-body {
-  display: flex;
-  gap: 1.25rem;
-  padding: 1.25rem;
-  align-items: flex-start;
-}
-
-.card-photo img {
-  width: 110px;
-  height: 130px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  background: #f1f5f9;
-  flex-shrink: 0;
-}
-
-.card-details {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.card-details p {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: #1e293b;
-  padding-bottom: 0.35rem;
-  border-bottom: 1px dashed #e2e8f0;
-}
-
-.card-details p:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.card-details strong {
-  color: #64748b;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* Print: show only the swimmer card, cleanly, without affecting normal printing
-   of other pages (e.g. the registrations list print button). */
-@media print {
-  body:has(.print-area) * {
-    visibility: hidden;
-  }
-
-  body:has(.print-area) .print-area,
-  body:has(.print-area) .print-area * {
-    visibility: visible;
-  }
-
-  body:has(.print-area) .print-area {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 1.5cm;
-  }
-
-  .swimmer-card {
-    max-width: 100%;
-    box-shadow: none;
-    border: 1px solid #94a3b8;
-    page-break-inside: avoid;
-  }
-}
-
-@page {
-  size: A5 portrait;
-  margin: 0.5cm;
-}
-
-/* --- Missing base styles used throughout the app --- */
-
-.alert {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.9rem;
-}
-
-.alert button {
-  background: none;
-  border: none;
-  color: #b91c1c;
-  font-size: 1.15rem;
-  line-height: 1;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.page-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.page-head h2 {
-  font-size: 1.25rem;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-}
-
-.page-head p {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin-top: 0.2rem;
-}
-
-.count-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 7px;
-  margin-inline-start: 8px;
-  background: #e0f2fe;
-  color: #0284c7;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.section-title {
-  font-size: 1.1rem;
-  color: #0f172a;
-  margin: 0.5rem 0 0.75rem;
-}
-
-.welcome-icon {
-  font-size: 2.5rem;
-  flex-shrink: 0;
-}
-
-.empty {
-  text-align: center;
-  color: #94a3b8;
-  padding: 2rem 1rem !important;
-  font-size: 0.9rem;
-}
-
-.toolbar.flex-gap {
-  align-items: center;
-}
-
-.toolbar.flex-gap select {
-  min-width: 160px;
-  flex: 0 0 auto;
-}
-
-.full {
-  width: 100%;
-  margin-top: 1.25rem;
-}
-
-.wide {
-  grid-column: 1 / -1;
-}
-
-.club-logo-mini {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  object-fit: cover;
-  vertical-align: middle;
-  margin-left: 6px;
-  background: #f1f5f9;
-}
-
-.club-logo-placeholder {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #e2e8f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-}
-
-.swimmer-thumb {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #f1f5f9;
-}
-
-.top-user {
-  font-size: 0.85rem;
-  color: #475569;
-  background: #f1f5f9;
-  padding: 0.4rem 0.9rem;
-  border-radius: 20px;
-}
+button.primary { padding: 0.65rem 1.4rem; font-weight: 700; }
+button.primary.full { width: 100%; }
 
 .photo-upload {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
 }
-
 .photo-upload-preview {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #cbd5e1;
-  background: #f1f5f9;
-  flex-shrink: 0;
+}
+.photo-upload input[type="file"] { flex: 1; }
+
+/* ---------- صفحة الدخول ---------- */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+.login-logo { width: 72px; height: 72px; margin: 0 auto 0.5rem; object-fit: contain; }
+.login-card h1 { font-size: 1.3rem; }
+.login-card p { font-size: 0.85rem; margin-bottom: 0.5rem; }
+.login-card label { text-align: right; }
+
+/* ---------- بطاقة السباح ---------- */
+.print-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 }
 
-.photo-upload input[type="file"] {
-  flex: 1;
-  min-width: 0;
-  font-size: 0.8rem;
+.swimmer-card {
+  width: 340px;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden; /* يمنع خروج شعار الخلفية عن حدود البطاقة */
+}
+
+.card-front {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.card-federation-logo, .card-club-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.card-header-text { flex: 1; min-width: 0; }
+.card-header-text h3 { font-size: 0.82rem; line-height: 1.35; }
+
+.card-body {
+  display: flex;
+  gap: 1rem;
+}
+.card-photo {
+  width: 90px;
+  height: 110px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+.card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card-details { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.card-details p { font-size: 0.76rem; line-height: 1.4; }
+
+/* ---------- طباعة البطاقة ---------- */
+@media print {
+  @page { size: A4 portrait; margin: 12mm; }
+  .app-shell > *:not(.modal-backdrop) { display: none !important; }
+  .modal-backdrop { position: static; background: none; padding: 0; display: block; }
+  .modal { box-shadow: none; max-height: none; max-width: none; width: auto; padding: 0; overflow: visible; }
+  .modal-head, .form-actions { display: none !important; }
+  .print-area { gap: 8mm; }
+  .swimmer-card { break-inside: avoid; page-break-inside: avoid; border-color: #cbd5e1; }
+  .card-front { break-inside: avoid; page-break-inside: avoid; }
+}
+
+/* =====================================================================
+   التجاوب مع الهاتف والشاشات الصغيرة
+   ===================================================================== */
+@media (max-width: 860px) {
+  .sidebar { width: 78vw; max-width: 300px; }
+
+  .main { padding: 1.1rem 1rem; }
+
+  .topbar {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .topbar > div:nth-child(2) { order: 3; width: 100%; }
+  .top-user {
+    margin-inline-start: auto;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .welcome { flex-direction: column; align-items: flex-start; padding: 1.4rem; text-align: right; }
+  .welcome-icon { width: 52px; height: 52px; min-width: 52px; }
+
+  .stats-grid, .quick-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
+  .stat, .quick { padding: 0.9rem 1rem; }
+
+  .page-head { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .toolbar input, .toolbar select { max-width: none; }
+
+  .form-grid.two { grid-template-columns: 1fr; }
+
+  .modal { padding: 1.1rem; max-height: 92vh; }
+
+  .card-body { flex-direction: column; align-items: center; text-align: center; }
+  .card-photo { width: 110px; height: 130px; }
+  .card-details { text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .sidebar { width: 86vw; }
+  .topbar h1 { font-size: 1.15rem; }
+  .welcome h2 { font-size: 1.1rem; }
+  button.small { padding: 0.3rem 0.55rem; font-size: 0.72rem; }
 }

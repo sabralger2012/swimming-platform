@@ -1,0 +1,379 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+/* =====================================================================
+   theme.css — طبقة تحسين المظهر (تُحمَّل بعد App.css وتتغلّب عليه)
+   لا تغيّر التخطيط: ألوان وظلال وحواف وخطوط فقط.
+   للتراجع: احذف سطر import './theme.css' من App.jsx.
+   ===================================================================== */
+
+:root {
+  --t-navy: #0b2a4a;
+  --t-blue: #0f4c81;
+  --t-sky: #1a7fc1;
+  --t-aqua: #22b8cf;
+  --t-ink: #12263f;
+  --t-muted: #64748b;
+  --t-line: #e2e8f0;
+  --t-bg: #f2f7fc;
+  --t-shadow: 0 6px 24px rgba(15, 76, 129, 0.08);
+  --t-shadow-lg: 0 14px 40px rgba(15, 76, 129, 0.16);
+}
+
+/* ---------- عام ---------- */
+body {
+  font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+  background: var(--t-bg);
+  color: var(--t-ink);
+}
+button, input, select, textarea { font-family: inherit; }
+::selection { background: rgba(34, 184, 207, 0.28); }
+
+input, select, textarea {
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--t-sky);
+  box-shadow: 0 0 0 3px rgba(26, 127, 193, 0.18);
+}
+
+/* ---------- شعار الاتحادية كعلامة مائية في الخلفية ---------- */
+.main { position: relative; isolation: isolate; }
+.main-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(46vw, 460px);
+  transform: translate(-50%, -50%);
+  opacity: 0.045;
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+}
+
+/* ---------- صفحة الدخول ---------- */
+.login-page {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, #bfe3f7 0%, transparent 60%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.55) 1.5px, transparent 1.5px),
+    linear-gradient(160deg, #eaf4fc 0%, #d7ebf9 45%, #c4e0f5 100%);
+  background-size: auto, 42px 42px, auto;
+  background-position: center, 0 0, center;
+}
+.login-page::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 180px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'><path fill='%231a7fc1' fill-opacity='.18' d='M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,160C1200,128,1320,96,1380,80L1440,64L1440,320L0,320Z'/></svg>") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.login-card {
+  position: relative;
+  z-index: 1;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--t-shadow-lg);
+  backdrop-filter: blur(6px);
+  margin-top: 90px;
+}
+.login-logo { filter: drop-shadow(0 6px 14px rgba(15, 76, 129, 0.25)); }
+
+/* ---------- رسم توضيحي (سباح) أعلى صفحة الدخول ---------- */
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(340px, 70vw);
+  height: 140px;
+  opacity: 0.9;
+  pointer-events: none;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 160'><g fill='none' stroke='%231a7fc1' stroke-width='6' stroke-linecap='round'><path d='M20 120c15 12 35 12 50 0s35-12 50 0 35 12 50 0 35-12 50 0 35 12 50 0 35-12 50 0'/><path d='M20 140c15 12 35 12 50 0s35-12 50 0 35 12 50 0 35-12 50 0 35 12 50 0' opacity='.55'/></g><g fill='%230f4c81'><circle cx='150' cy='55' r='14'/><path d='M100 95c8-22 30-30 55-24l38 10c10 3 18 11 20 21l4 20-18 4-4-18c-1-5-5-9-10-10l-14-4 10 34-16 6-12-40-16 4 6 26-16 4-8-34c-14 2-24 12-27 24z'/></g></svg>") center / contain no-repeat;
+}
+
+/* ---------- الشريط الجانبي ---------- */
+.sidebar {
+  background: linear-gradient(180deg, var(--t-navy) 0%, var(--t-blue) 100%);
+  color: #e6f1fb;
+  box-shadow: -6px 0 30px rgba(11, 42, 74, 0.18);
+}
+.brand strong { color: #fff; }
+.brand span { color: #9ec7ea; }
+.brand-logo-img {
+  background: #fff;
+  border-radius: 50%;
+  padding: 3px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.nav-item {
+  background: transparent;
+  color: #cfe2f3;
+  border-radius: 12px;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.nav-item:hover { background: rgba(255, 255, 255, 0.09); color: #fff; }
+.nav-item.active {
+  background: linear-gradient(90deg, var(--t-aqua), var(--t-sky));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(34, 184, 207, 0.35);
+}
+.user-mini { background: rgba(255, 255, 255, 0.08); border-radius: 14px; }
+.user-mini strong { color: #fff; }
+.user-mini span { color: #a9cbe8; }
+.avatar {
+  background: linear-gradient(135deg, var(--t-aqua), var(--t-sky));
+  color: #fff;
+  font-weight: 800;
+}
+.logout {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+.logout:hover { background: rgba(220, 38, 38, 0.55); }
+
+/* ---------- الشريط العلوي وعناوين الصفحات ---------- */
+.topbar h1 { color: var(--t-ink); font-weight: 800; }
+.topbar p { color: var(--t-muted); }
+.top-user {
+  background: #fff;
+  color: var(--t-blue);
+  border: 1px solid var(--t-line);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  box-shadow: var(--t-shadow);
+}
+.page-head h2 { color: var(--t-ink); font-weight: 800; }
+.count-badge {
+  background: #e0f2fe;
+  color: var(--t-blue);
+  border-radius: 999px;
+  padding: 0.05rem 0.6rem;
+  font-size: 0.8rem;
+  margin-inline-start: 0.5rem;
+}
+.section-title {
+  border-inline-start: 4px solid var(--t-aqua);
+  padding-inline-start: 0.6rem;
+  color: var(--t-ink);
+}
+
+/* ---------- لوحة التحكم ---------- */
+.welcome {
+  position: relative;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(120deg, rgba(255, 255, 255, 0.09) 0 2px, transparent 2px 34px),
+    linear-gradient(120deg, var(--t-blue) 0%, var(--t-sky) 55%, var(--t-aqua) 100%);
+  color: #fff;
+  border-radius: 22px;
+  box-shadow: var(--t-shadow-lg);
+}
+.welcome::after {
+  content: '';
+  position: absolute;
+  inset: auto -5% -30% auto;
+  width: 220px;
+  height: 220px;
+  opacity: 0.16;
+  pointer-events: none;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g fill='none' stroke='white' stroke-width='9' stroke-linecap='round'><path d='M10 60c15 12 35 12 50 0s35-12 50 0 35 12 50 0 35-12 50 0'/><path d='M10 100c15 12 35 12 50 0s35-12 50 0 35 12 50 0 35-12 50 0'/><path d='M10 140c15 12 35 12 50 0s35-12 50 0 35 12 50 0 35-12 50 0'/></g></svg>") center / contain no-repeat;
+}
+.welcome h2, .welcome p { color: #fff; position: relative; z-index: 1; }
+.welcome-icon { background: rgba(255, 255, 255, 0.18); color: #fff; position: relative; z-index: 1; }
+.welcome-icon.welcome-icon--logo {
+  background: #fff;
+  padding: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+.welcome-icon--logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  display: block;
+}
+.stat, .quick {
+  background: #fff;
+  border: 1px solid var(--t-line);
+  border-radius: 18px;
+  box-shadow: var(--t-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat:hover, .quick:hover { transform: translateY(-3px); box-shadow: var(--t-shadow-lg); }
+.stat-icon, .quick-icon {
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+  color: var(--t-blue);
+  border-radius: 14px;
+}
+.stat strong, .quick strong { color: var(--t-ink); }
+.stat span { color: var(--t-muted); }
+
+/* ---------- الجداول والأزرار ---------- */
+.table-card {
+  background: #fff;
+  border: 1px solid var(--t-line);
+  border-radius: 18px;
+  box-shadow: var(--t-shadow);
+}
+.table-card thead th { background: #f1f6fb; color: #0f3a63; font-weight: 700; }
+.table-card tbody td { border-bottom: 1px solid #eef2f7; }
+.table-card tbody tr { transition: background 0.15s; }
+.table-card tbody tr:hover { background: #f6fafe; }
+.empty { color: var(--t-muted); }
+
+.status {
+  background: #e0f2fe;
+  color: var(--t-blue);
+  border-radius: 999px;
+  padding: 0.12rem 0.65rem;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+button.primary {
+  background: linear-gradient(135deg, var(--t-sky), var(--t-blue));
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(15, 76, 129, 0.28);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+button.primary:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15, 76, 129, 0.34); }
+button.small { border-radius: 8px; transition: background 0.15s; }
+button.small.danger { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+button.small.danger:hover { background: #fecaca; }
+button.small.success { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+
+/* ---------- النوافذ المنبثقة ---------- */
+.modal-backdrop { backdrop-filter: blur(3px); }
+.modal { border-radius: 20px; box-shadow: var(--t-shadow-lg); }
+.modal-head h2 { color: var(--t-ink); font-weight: 800; }
+
+/* =====================================================================
+   بطاقة السباح — ظهر البطاقة (شعار الاتحادية)
+   ===================================================================== */
+.swimmer-card.card-back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  box-sizing: border-box;
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  text-align: center;
+  overflow: hidden;
+  border-top: 6px solid var(--t-aqua);
+  background: linear-gradient(180deg, #ffffff 0%, #eef6fc 100%);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.card-back-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(15, 76, 129, 0.18);
+}
+.card-back h3 { margin: 0; font-size: 1rem; color: var(--t-blue); }
+.card-back-league { font-size: 0.74rem; color: var(--t-muted); line-height: 1.5; }
+.card-back-note { margin: 0; max-width: 92%; font-size: 0.7rem; line-height: 1.6; color: #334155; }
+.card-back-footer { width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 0.75rem; }
+.card-back-sign {
+  flex: 1;
+  height: 44px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 3px;
+  border: 1px dashed #94a3b8;
+  border-radius: 8px;
+  font-size: 0.66rem;
+  color: var(--t-muted);
+}
+.card-back-number { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.66rem; color: var(--t-muted); }
+.card-back-number strong { font-size: 0.85rem; color: var(--t-ink); }
+
+/* وجه البطاقة: شعار الاتحاد كخلفية باهتة خلف البيانات */
+.swimmer-card.card-front { position: relative; isolation: isolate; }
+.swimmer-card.card-front::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--card-bg) center / 52% auto no-repeat;
+  opacity: 0.1;
+  pointer-events: none;
+}
+.card-front .card-header-text span { font-size: 0.72rem; line-height: 1.5; }
+
+/* ---------- الطباعة ---------- */
+@media print {
+  .main-watermark { display: none !important; }
+  .swimmer-card, .swimmer-card * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* حجم ثابت بالمليمتر عند الطباعة الفعلية ليطابق حجم بطاقة رسمية */
+  .swimmer-card { width: 90mm !important; box-shadow: none !important; }
+  .swimmer-card.card-back { margin-top: 10mm; }
+  .swimmer-card.card-front::before { opacity: 0.14; }
+}
+
+/* =====================================================================
+   الشريط الجانبي كقائمة منسدلة على الهاتف
+   ===================================================================== */
+.menu-toggle {
+  display: none;
+  background: #fff;
+  border: 1px solid var(--t-line);
+  color: var(--t-blue);
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--t-shadow);
+  flex-shrink: 0;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .menu-toggle { display: flex; }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 0 0 auto;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    z-index: 1100;
+    box-shadow: -10px 0 30px rgba(11, 42, 74, 0.3);
+  }
+  .sidebar.sidebar-open { transform: translateX(0); }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 42, 74, 0.45);
+    z-index: 1090;
+  }
+}
